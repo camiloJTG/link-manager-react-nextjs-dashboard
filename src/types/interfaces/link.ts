@@ -4,6 +4,7 @@ export interface LinkModalRegisterProps {
    title: string;
    open: boolean;
    onClose: Dispatch<SetStateAction<boolean>>;
+   id?: string;
 }
 
 export interface Link {

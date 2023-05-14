@@ -24,6 +24,7 @@ const DisplayList = ({ links }: linkListProps) => {
                         url={url}
                         key={id}
                         imageUrl={imageUrl}
+                        id={id}
                      />
                   </div>
                ))
