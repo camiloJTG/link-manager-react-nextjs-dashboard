@@ -1,0 +1,21 @@
+.navbarButton {
+   margin-top: 2px;
+   margin-bottom: 2px;
+   color: white;
+   display: block;
+}
+
+.drawerList {
+   margin-right: 100px;
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.drawerIconList {
+   margin-right: 25px;
+   margin-left: 5px;
+}
+
+.closeButton {
+   background-color: yellowgreen;
+}
