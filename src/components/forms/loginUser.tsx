@@ -13,11 +13,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import Styles from './forms.module.css';
 import NotificationModal from '@/components/common/NotificationModal';
-import { useForm } from '@/hooks/useForm';
-import { loginUser } from '@/services/auth';
+import { useForm } from '@/hooks';
+import { loginUser } from '@/services';
 import { Login } from '@/types';
 
-const loginForm = () => {
+const LoginForm = () => {
    const { formRef, getFormValues } = useForm('loginUser');
    const [error, setError] = useState('');
    const [open, setOpen] = useState(false);
@@ -97,4 +97,4 @@ const loginForm = () => {
    );
 };
 
-export default loginForm;
+export default LoginForm;

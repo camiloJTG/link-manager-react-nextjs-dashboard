@@ -13,8 +13,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import Styles from './forms.module.css';
 import NotificationModal from '@/components/common/NotificationModal';
-import { useForm } from '@/hooks/useForm';
-import { registerUserService } from '@/services/auth';
+import { useForm } from '@/hooks';
+import { registerUserService } from '@/services';
 import { User } from '@/types';
 
 const RegisterUser = () => {

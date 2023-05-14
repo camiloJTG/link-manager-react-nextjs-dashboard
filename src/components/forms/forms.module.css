@@ -21,3 +21,14 @@
    align-items: center;
    padding: 3%;
 }
+
+.displayRegisterForm {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 400px;
+   background-color: #fff;
+   box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5);
+   padding: 32px;
+}
