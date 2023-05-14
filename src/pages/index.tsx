@@ -1,5 +1,7 @@
+import LoginUser from '@/components/forms/loginUser';
+
 const index = () => {
-   return <div>index</div>;
+   return <LoginUser />;
 };
 
 export default index;
