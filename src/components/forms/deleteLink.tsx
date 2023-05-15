@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState, useContext } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -11,15 +11,21 @@ import Divider from '@mui/material/Divider';
 
 import Styles from '@/components/forms/forms.module.css';
 import { LinkModalRegisterProps } from '@/types/interfaces';
+import { deleteLink } from '@/services';
+import { AuthContext } from '@/contexts';
 
 const DeleteLink = (props: LinkModalRegisterProps) => {
-   const { open, onClose, title } = props;
+   const { open, onClose, title, id } = props;
    const [openModal, setOpenModal] = useState<boolean>(open);
+   const { token } = useContext(AuthContext);
 
    const handleCloseModal = () => setOpenModal(false);
    const handleDeleteSubmit = async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      console.log(props.id);
+      if (!id) return;
+      const result = await deleteLink(id, token);
+      if (result.length <= 0) setOpenModal(false);
+      return;
    };
 
    useEffect(() => {

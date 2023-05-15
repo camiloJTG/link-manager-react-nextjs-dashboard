@@ -50,3 +50,21 @@ export const getlinkByUser = async (
       return error;
    }
 };
+
+export const deleteLink = async (id: string, token: string): Promise<string> => {
+   try {
+      const url = `${link.deleteLink}/${id}`;
+      const resp = await fetch(url, {
+         method: 'DELETE',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+         }
+      });
+      if (resp.ok) return '';
+      const { message }: CommonErrorService = await resp.json();
+      return message;
+   } catch (error: any) {
+      return error;
+   }
+};
