@@ -1,6 +1,6 @@
 import { apiConfig } from '@/configs';
 import { CommonErrorService, Link, ListLink } from '@/types';
-import { createLinkSchema } from '@/types/schemas';
+import { createLinkSchema, updateLinkSchema } from '@/types/schemas';
 
 const { link } = apiConfig;
 
@@ -64,6 +64,46 @@ export const deleteLink = async (id: string, token: string): Promise<string> => 
       if (resp.ok) return '';
       const { message }: CommonErrorService = await resp.json();
       return message;
+   } catch (error: any) {
+      return error;
+   }
+};
+
+export const updateLink = async (id: string, body: Link) => {
+   try {
+      const { token, ...rest } = body;
+      await updateLinkSchema.validate(rest, { abortEarly: true });
+
+      const resp = await fetch(`${link.updateLink}/${id}`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+         },
+         body: JSON.stringify(rest)
+      });
+
+      if (resp.ok) return '';
+      const { statusCode, message }: CommonErrorService = await resp.json();
+      if (statusCode >= 400 && statusCode < 500) return message;
+      return message;
+   } catch (error: any) {
+      return error;
+   }
+};
+
+export const getLink = async (id: string, token: string): Promise<Link> => {
+   try {
+      const url = `${link.getLink}/${id}`;
+      const resp = await fetch(url, {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+         }
+      });
+      const data: Link = await resp.json();
+      return data;
    } catch (error: any) {
       return error;
    }

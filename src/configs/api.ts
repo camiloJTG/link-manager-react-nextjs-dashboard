@@ -8,6 +8,8 @@ export const apiConfig = {
    link: {
       create: `${API}/link`,
       listLink: `${API}/link/user`,
-      deleteLink: `${API}/link`
+      deleteLink: `${API}/link`,
+      getLink: `${API}/link`,
+      updateLink: `${API}/link`
    }
 };

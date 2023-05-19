@@ -14,12 +14,15 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { ListLink } from '@/types';
 import DeleteLink from '../forms/deleteLink';
+import UpdateLink from '../forms/registerLink';
 
 const DisplayCard = ({ name, url, description, domain, imageUrl, id }: ListLink) => {
    const [deleteForm, setDeleteForm] = useState(false);
+   const [updateForm, setUpdateForm] = useState(false);
 
    const handleOpenUrl = () => window.open(url, '_blank', 'noopener noreferrer');
    const handleDeleteLink = () => setDeleteForm(true);
+   const handleUpdateLink = () => setUpdateForm(true);
 
    return (
       <>
@@ -31,6 +34,15 @@ const DisplayCard = ({ name, url, description, domain, imageUrl, id }: ListLink)
                id={id}
             />
          )}
+         {updateForm && (
+            <UpdateLink
+               open={updateForm}
+               onClose={setUpdateForm}
+               title='Actualizar enlace'
+               id={id}
+            />
+         )}
+
          <Card raised>
             <CardActionArea onClick={handleOpenUrl}>
                <CardMedia component='img' height='194' image={imageUrl} alt={name} />
@@ -56,7 +68,7 @@ const DisplayCard = ({ name, url, description, domain, imageUrl, id }: ListLink)
                   </Link>
                </Grid>
                <Grid container direction='row' justifyContent='flex-end' alignItems='center'>
-                  <IconButton aria-label='update'>
+                  <IconButton aria-label='update' onClick={handleUpdateLink}>
                      <UpdateIcon />
                   </IconButton>
                   <IconButton aria-label='delete' onClick={handleDeleteLink}>

@@ -11,7 +11,6 @@ export interface Link {
    title: string;
    url: string;
    description: string;
-   isFavorite: boolean;
    userId?: string;
    token?: string;
 }

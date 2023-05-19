@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -13,17 +13,17 @@ import Styles from '@/components/forms/forms.module.css';
 import NotificationModal from '@/components/common/NotificationModal';
 import { Link, LinkModalRegisterProps } from '@/types/interfaces';
 import { useForm } from '@/hooks';
-import { createLinkService } from '@/services';
+import { createLinkService, getLink, updateLink } from '@/services';
 import { AuthContext } from '@/contexts';
 
 const RegisterLink = (props: LinkModalRegisterProps) => {
-   const { open, onClose, title } = props;
+   const { open, onClose, title, id } = props;
    const { token, userId } = useContext(AuthContext);
    const { formRef, getFormValues } = useForm('registerLink');
    const [openModal, setOpenModal] = useState<boolean>(open);
    const [openMessage, setOpenMessage] = useState<boolean>(false);
    const [message, setMessage] = useState<string>('');
-
+   const [form, setForm] = useState<Link>({ description: '', title: '', url: '', userId: '' });
    const handleCloseModal = () => setOpenModal(false);
    const handleCloseMessage = () => setOpenMessage(false);
 
@@ -31,7 +31,12 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
       e.preventDefault();
       const formValue = getFormValues();
       if (!formValue) return null;
-      const result = await createLinkService({ token, userId, ...formValue } as Link);
+      let result = null;
+      if (id) {
+         result = await updateLink(id, { token, userId, ...formValue } as Link);
+      } else {
+         result = await createLinkService({ token, userId, ...formValue } as Link);
+      }
       if (result.length <= 0) {
          onClose(false);
       } else {
@@ -40,7 +45,19 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
       }
    };
 
+   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setForm((prevForm) => ({ ...prevForm, [name]: value }));
+   };
+
    useEffect(() => {
+      const getPreviousValue = async () => {
+         if (id) {
+            const values = await getLink(id, token);
+            setForm(values);
+         }
+      };
+      getPreviousValue();
       if (!openModal) onClose(false);
    }, [openModal, onClose]);
 
@@ -86,6 +103,8 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
                            name='title'
                            autoComplete='off'
                            autoFocus
+                           value={form.title}
+                           onChange={handleInputChange}
                         />
                         <TextField
                            margin='normal'
@@ -96,6 +115,8 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
                            label='URL dle sitio web'
                            name='url'
                            autoComplete='off'
+                           value={form.url}
+                           onChange={handleInputChange}
                         />
                         <TextField
                            margin='normal'
@@ -109,6 +130,8 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
                            autoComplete='off'
                            multiline
                            minRows={2}
+                           value={form.description}
+                           onChange={handleInputChange}
                         />
                         <Button type='submit' fullWidth variant='contained' sx={{ mt: 3 }}>
                            Guardar
