@@ -1,7 +1,7 @@
 'use client';
 
-import { FC, createContext, useState } from 'react';
 import { decode } from 'jsonwebtoken';
+import { FC, createContext, useState } from 'react';
 import { AuthContextType, AuthProviderProps, TokenPayload } from '@/types';
 
 const getLocalStorageValues = (): string => {
@@ -27,7 +27,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
    const updateToken = (token: string) => {
       if (token.length === 0) return;
-      localStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
       setToken(token);
       setUserId(getUserId(token));
    };

@@ -1,7 +1,12 @@
 import HomeContainer from '@/components/containers/Home';
+import PrivateRoute from '@/components/utils/CheckPrivateRoutes';
 
 const Home = () => {
-   return <HomeContainer />;
+   return (
+      <PrivateRoute>
+         <HomeContainer />
+      </PrivateRoute>
+   );
 };
 
 export default Home;

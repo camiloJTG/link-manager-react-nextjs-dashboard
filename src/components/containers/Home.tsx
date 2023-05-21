@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+
 import HomeLayout from '@/components/layouts/Home';
 import DisplayList from '@/components/common/DisplayList';
 import { ListLink } from '@/types';
@@ -15,7 +16,7 @@ const Home = () => {
          setLinks(result);
       };
       getLinks();
-   }, [userId, token]);
+   }, []);
 
    return (
       <HomeLayout>

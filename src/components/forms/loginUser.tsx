@@ -30,7 +30,7 @@ const LoginForm = () => {
       const result = await loginUser(formValue as Login);
       if (result.length <= 0) {
          setError('');
-         router.replace('home');
+         router.push('home');
       }
       setError(result);
    };

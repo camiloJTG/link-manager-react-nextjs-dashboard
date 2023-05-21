@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,9 +25,15 @@ import LinkForm from '@/components/forms/registerLink';
 const Navbar = () => {
    const [open, setOpen] = useState(false);
    const [showLink, setShowLink] = useState(false);
+   const router = useRouter();
    const handleClose = () => setOpen(false);
    const handleOpen = () => setOpen(true);
    const handleShowLink = () => setShowLink(true);
+
+   const handleCloseSession = () => {
+      router.replace('/');
+      sessionStorage.removeItem('token');
+   };
 
    return (
       <>
@@ -42,7 +49,9 @@ const Navbar = () => {
                      </Button>
                   </Box>
                   <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
-                     <Button className={Styles.navbarButton}>cerrar sesión</Button>
+                     <Button className={Styles.navbarButton} onClick={handleCloseSession}>
+                        cerrar sesión
+                     </Button>
                   </Box>
                </Toolbar>
 
@@ -81,7 +90,7 @@ const Navbar = () => {
                <Divider />
                <ListItem disablePadding className={Styles.drawerList}>
                   <ListItemButton>
-                     <ListItemIcon>
+                     <ListItemIcon onClick={handleCloseSession}>
                         <MeetingRoomIcon className={Styles.drawerIconList} /> Cerrar sesión
                      </ListItemIcon>
                   </ListItemButton>
