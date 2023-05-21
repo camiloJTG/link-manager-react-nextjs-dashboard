@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import AppBar from '@mui/material/AppBar';
@@ -26,6 +26,7 @@ const Navbar = () => {
    const [open, setOpen] = useState(false);
    const [showLink, setShowLink] = useState(false);
    const router = useRouter();
+
    const handleClose = () => setOpen(false);
    const handleOpen = () => setOpen(true);
    const handleShowLink = () => setShowLink(true);

@@ -1,11 +1,8 @@
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { AuthProviderProps } from '@/types';
 
-interface PrivateRouteProps {
-   children: ReactNode;
-}
-
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+const PrivateRoute: React.FC<AuthProviderProps> = ({ children }) => {
    const router = useRouter();
 
    useEffect(() => {

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -16,21 +16,25 @@ import NotificationModal from '@/components/common/NotificationModal';
 import { useForm } from '@/hooks';
 import { loginUser } from '@/services';
 import { Login } from '@/types';
+import { AuthContext } from '@/contexts';
 
 const LoginForm = () => {
    const { formRef, getFormValues } = useForm('loginUser');
    const [error, setError] = useState('');
    const [open, setOpen] = useState(false);
    const router = useRouter();
+   const { setToken } = useContext(AuthContext);
 
    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formValue = getFormValues();
       if (!formValue) return null;
       const result = await loginUser(formValue as Login);
-      if (result.length <= 0) {
+      if (result.match('token:')) {
+         const token = result.split('token:')[1];
+         setToken(token);
          setError('');
-         router.push('home');
+         router.replace('home');
       }
       setError(result);
    };

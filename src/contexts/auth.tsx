@@ -1,39 +1,46 @@
-'use client';
-
 import { decode } from 'jsonwebtoken';
-import { FC, createContext, useState } from 'react';
+import { FC, createContext, useEffect, useState } from 'react';
 import { AuthContextType, AuthProviderProps, TokenPayload } from '@/types';
-
-const getLocalStorageValues = (): string => {
-   if (typeof window === 'undefined') return '';
-   const accessToken = sessionStorage.getItem('token');
-   return accessToken ? accessToken : '';
-};
-
-const getUserId = (token: string) => {
-   const tokenDecoded = decode(token) as TokenPayload;
-   return !tokenDecoded ? '' : tokenDecoded.id;
-};
 
 export const AuthContext = createContext<AuthContextType>({
    token: '',
-   setToken: () => {},
-   userId: ''
+   userId: '',
+   setToken: () => {}
 });
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-   const [token, setToken] = useState<string>(getLocalStorageValues());
-   const [userId, setUserId] = useState<string>(getUserId(token));
+   const [token, setToken] = useState<string>('');
+   const [userId, setUserId] = useState<string>('');
 
-   const updateToken = (token: string) => {
-      if (token.length === 0) return;
-      sessionStorage.setItem('token', token);
-      setToken(token);
-      setUserId(getUserId(token));
+   useEffect(() => {
+      const accessToken = sessionStorage.getItem('token');
+      if (accessToken) {
+         setToken(accessToken);
+         const decodedToken = decode(token) as TokenPayload;
+         if (decodedToken && typeof decodedToken === 'object') {
+            setUserId(decodedToken.id);
+         }
+      }
+   }, []);
+
+   useEffect(() => {
+      if (token) {
+         sessionStorage.setItem('token', token);
+      } else {
+         sessionStorage.removeItem('token');
+      }
+   }, [token]);
+
+   const updateToken = (newToken: string) => {
+      setToken(newToken);
+      const decodedToken = decode(newToken) as TokenPayload;
+      if (decodedToken && typeof decodedToken === 'object') {
+         setUserId(decodedToken.id);
+      }
    };
 
    return (
-      <AuthContext.Provider value={{ token, setToken: updateToken, userId }}>
+      <AuthContext.Provider value={{ token, userId, setToken: updateToken }}>
          {children}
       </AuthContext.Provider>
    );
