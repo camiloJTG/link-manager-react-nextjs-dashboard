@@ -53,8 +53,8 @@ export const loginUser = async (body: Login): Promise<string> => {
 
       if (resp.ok) {
          const data: TokenResponse = await resp.json();
-         // sessionStorage.setItem('token', data.token);
-         return `token:${data.token}`;
+         sessionStorage.setItem('token', data.token);
+         return data.token;
       }
       if (resp.status >= 500 && resp.status < 600)
          return 'Ha ocurrido un error. Intentelo más tarde';
