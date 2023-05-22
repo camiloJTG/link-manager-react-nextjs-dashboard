@@ -21,11 +21,13 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import Styles from '@/components/common/common.module.css';
 import LinkForm from '@/components/forms/registerLink';
+import { AuthContext } from '@/contexts';
 
 const Navbar = () => {
    const [open, setOpen] = useState(false);
    const [showLink, setShowLink] = useState(false);
    const router = useRouter();
+   const { setLoggedIn } = useContext(AuthContext);
 
    const handleClose = () => setOpen(false);
    const handleOpen = () => setOpen(true);
@@ -33,7 +35,8 @@ const Navbar = () => {
 
    const handleCloseSession = () => {
       router.replace('/');
-      sessionStorage.removeItem('token');
+      localStorage.removeItem('token');
+      setLoggedIn();
    };
 
    return (

@@ -23,8 +23,7 @@ export const registerUserService = async (body: User): Promise<string> => {
 
       if (resp.ok) {
          const data: TokenResponse = await resp.json();
-         sessionStorage.setItem('token', data.token);
-         return '';
+         return `token:${data.token}`;
       }
       if (resp.status >= 500 && resp.status < 600)
          return 'Ha ocurrido un error. Intentelo más tarde';
@@ -53,8 +52,7 @@ export const loginUser = async (body: Login): Promise<string> => {
 
       if (resp.ok) {
          const data: TokenResponse = await resp.json();
-         sessionStorage.setItem('token', data.token);
-         return data.token;
+         return `token:${data.token}`;
       }
       if (resp.status >= 500 && resp.status < 600)
          return 'Ha ocurrido un error. Intentelo más tarde';

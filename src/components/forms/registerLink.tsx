@@ -24,6 +24,7 @@ const RegisterLink = (props: LinkModalRegisterProps) => {
    const [openMessage, setOpenMessage] = useState<boolean>(false);
    const [message, setMessage] = useState<string>('');
    const [form, setForm] = useState<Link>({ description: '', title: '', url: '', userId: '' });
+
    const handleCloseModal = () => setOpenModal(false);
    const handleCloseMessage = () => setOpenMessage(false);
 

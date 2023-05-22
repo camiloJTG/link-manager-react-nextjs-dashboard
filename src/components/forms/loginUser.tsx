@@ -30,14 +30,16 @@ const LoginForm = () => {
       const formValue = getFormValues();
       if (!formValue) return null;
       const result = await loginUser(formValue as Login);
-      if (result.length <= 0) {
-         console.log(result);
-         // const token = result.split('token:')[1];
-         setToken(result);
-         setError('');
-         router.replace('home');
+      if (result.match('token:')) {
+         const token = result.split('token:')[1];
+         if (token) {
+            setToken(token);
+            setError('');
+            router.replace('home');
+         }
+      } else {
+         setError(result);
       }
-      setError(result);
    };
 
    useEffect(() => {
