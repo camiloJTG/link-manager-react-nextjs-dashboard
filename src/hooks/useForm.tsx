@@ -9,8 +9,8 @@ export const useForm = <T extends CustomFormData>() => {
       if (!formElement) return null;
 
       const formData: CustomFormData = {};
-
       const elements = formElement.elements;
+
       for (let i = 0; i < elements.length; i++) {
          const element = elements[i] as HTMLInputElement | HTMLTextAreaElement;
          if (element.name) {
