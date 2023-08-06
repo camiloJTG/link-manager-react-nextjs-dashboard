@@ -1,8 +1,8 @@
-import { Credentials, ErrorMessage, TokenResp } from '@/types/interfaces';
+import { InputCredentials, ErrorMessage, TokenResp } from '@/types/interfaces';
 
 const BASE_URL = process.env.NEXT_PUBLIC_LINK_MANAGER_API_BASE_URL;
 
-export const loginUser = async (credentials: Credentials) => {
+export const loginUser = async (credentials: InputCredentials) => {
    try {
       const resp = await fetch(`${BASE_URL}/auth/login`, {
          method: 'POST',

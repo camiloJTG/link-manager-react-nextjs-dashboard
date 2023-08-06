@@ -1,24 +1,32 @@
 'use client';
-
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useForm } from '@/hooks';
+import { InputCredentials } from '@/types/interfaces';
 
 const LoginForm = () => {
-   const [email, setemail] = useState('');
-   const [password, setPassword] = useState('');
+   const [error, setError] = useState('');
+   const { formRef, getFormData } = useForm<InputCredentials>();
+   const router = useRouter();
 
    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-         await signIn('credentials', { email, password });
-      } catch (error) {
-         console.log(error);
-      }
+      const currentForm = getFormData();
+      // Check input data
+      const result = await signIn('credentials', {
+         email: currentForm?.email,
+         password: currentForm?.password,
+         callbackUrl: '/dashboard',
+         redirect: false
+      });
+      result?.error ? setError('Invalid credentials') : router.replace('/dashboard');
    };
 
    return (
       <div className='container mx-auto'>
+         {error && <h1>{error}</h1>}
          <div className='flex justify-center px-6 my-12'>
             <div className='w-full xl:w-3/4 lg:w-11/12 flex'>
                <div
@@ -30,7 +38,11 @@ const LoginForm = () => {
                <div className='w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none'>
                   <h3 className='pt-4 text-2xl text-center'>Login</h3>
 
-                  <form className='px-8 pt-6 pb-8 mb-4 bg-white rounded' onSubmit={handleLogin}>
+                  <form
+                     className='px-8 pt-6 pb-8 mb-4 bg-white rounded'
+                     ref={formRef}
+                     onSubmit={handleLogin}
+                  >
                      <div className='mb-4'>
                         <label className='block mb-2 text-sm font-bold text-gray-700'>Email</label>
                         <input
@@ -38,8 +50,7 @@ const LoginForm = () => {
                            id='email'
                            type='email'
                            placeholder='your-email@gmail.com'
-                           value={email}
-                           onChange={(e) => setemail(e.target.value)}
+                           required
                         />
                         <label className='block mb-2 text-sm font-bold text-gray-700'>
                            Password
@@ -49,8 +60,7 @@ const LoginForm = () => {
                            id='password'
                            type='password'
                            placeholder='******************'
-                           value={password}
-                           onChange={(e) => setPassword(e.target.value)}
+                           required
                         />
                      </div>
                      <div className='mb-6 text-center'>

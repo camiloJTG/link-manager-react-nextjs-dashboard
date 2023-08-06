@@ -9,19 +9,22 @@ const handler = NextAuth({
       CredentialsProvider({
          name: 'credentials',
          credentials: {
-            email: { label: 'email', type: 'email', placeholder: 'your-email@gmail.com' },
-            password: { label: 'password', type: 'password', placeholder: '*********' }
+            email: { label: 'email', type: 'email' },
+            password: { label: 'password', type: 'password' }
          },
          async authorize(credentials, req) {
             const user = await loginUser({
                email: credentials?.email!,
                password: credentials?.password!
             });
+
             if ('token' in user) {
                const data = decode(user.token) as TokenPayload;
                data.token = user.token;
                return data;
             }
+            if ('statusCode' in user) return null;
+
             return null;
          }
       })

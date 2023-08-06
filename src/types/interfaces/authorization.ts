@@ -1,12 +1,8 @@
-export interface Credentials {
+import { CustomFormData } from './customHook';
+
+export interface InputCredentials extends CustomFormData {
    email: string;
    password: string;
-}
-
-export interface TokenResp {
-   id: string;
-   token: string;
-   expired: string;
 }
 
 export interface TokenPayload {
@@ -18,10 +14,10 @@ export interface TokenPayload {
    exp: number;
 }
 
-export interface ErrorMessage {
-   statusCode: number;
-   message: string;
-   error: string;
+export interface TokenResp {
+   id: string;
+   token: string;
+   expired: string;
 }
 
 declare module 'next-auth' {
