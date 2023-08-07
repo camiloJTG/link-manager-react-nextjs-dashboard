@@ -5,6 +5,11 @@ export interface InputCredentials extends CustomFormData {
    password: string;
 }
 
+export interface InputRegister extends CustomFormData {
+   username: string;
+   email: string;
+   password: string;
+}
 export interface TokenPayload {
    id: string;
    username: string;

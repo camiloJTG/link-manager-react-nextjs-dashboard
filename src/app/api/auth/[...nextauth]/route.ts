@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { decode } from 'jsonwebtoken';
-import { loginUser } from '@/services';
+import { loginUser, registerUser } from '@/services';
 import { TokenPayload } from '@/types/interfaces';
 
 const handler = NextAuth({
@@ -10,13 +10,26 @@ const handler = NextAuth({
          name: 'credentials',
          credentials: {
             email: { label: 'email', type: 'email' },
-            password: { label: 'password', type: 'password' }
+            password: { label: 'password', type: 'password' },
+            username: { label: 'username', type: 'text' }
          },
          async authorize(credentials, req) {
-            const user = await loginUser({
-               email: credentials?.email!,
-               password: credentials?.password!
-            });
+            if (!credentials) return null;
+
+            let user = null;
+
+            if (credentials.username) {
+               user = await registerUser({
+                  email: credentials.email,
+                  password: credentials.password,
+                  username: credentials.username
+               });
+            } else {
+               user = await loginUser({
+                  email: credentials.email,
+                  password: credentials.password
+               });
+            }
 
             if ('token' in user) {
                const data = decode(user.token) as TokenPayload;
