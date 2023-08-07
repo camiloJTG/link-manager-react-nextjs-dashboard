@@ -23,7 +23,7 @@ export const loginUser = async (credentials: InputCredentials) => {
 
 export const registerUser = async (register: InputRegister) => {
    try {
-      const resp = await fetch(`${BASE_URL}/auth/register`, {
+      const resp = await fetch(`${BASE_URL}/user/register`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(register)

@@ -15,10 +15,9 @@ const handler = NextAuth({
          },
          async authorize(credentials, req) {
             if (!credentials) return null;
-
             let user = null;
 
-            if (credentials.username) {
+            if (credentials?.username) {
                user = await registerUser({
                   email: credentials.email,
                   password: credentials.password,

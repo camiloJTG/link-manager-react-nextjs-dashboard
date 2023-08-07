@@ -42,6 +42,6 @@ export const registerUserValidation = yup.object().shape({
       .trim()
       .matches(
          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-         'Invalid credentials'
+         'The credential must have at least one uppercase letter, one lowercase letter, numbers and symbols. '
       )
 });

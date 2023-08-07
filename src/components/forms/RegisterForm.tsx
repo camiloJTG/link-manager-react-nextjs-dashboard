@@ -2,9 +2,11 @@
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useForm } from '@/hooks';
 import { InputRegister } from '@/types/interfaces';
 import { registerUserValidation } from '@/types/schemas/authorization';
+import DisplayNotification from '@/components/common/NotificationPopUp';
 
 const RegisterForm = () => {
    const [error, setError] = useState<string>('');
@@ -18,12 +20,22 @@ const RegisterForm = () => {
          if (!curretForm) return null;
 
          await registerUserValidation.validate(curretForm);
-         // Llamar a next auth
-         // crear function de register
+         const result = await signIn('credentials', {
+            username: curretForm.username,
+            email: curretForm.email,
+            password: curretForm.password,
+            callbackUrl: '/dashboard',
+            redirect: false
+         });
+         result?.error
+            ? setError('The data entered are already in use')
+            : router.replace('/dashboard');
       } catch (error: any) {
          setError(error.message);
       }
    };
+
+   const handleOnStateError = () => setError('');
 
    return (
       <div className='container mx-auto'>
@@ -36,6 +48,14 @@ const RegisterForm = () => {
                   }}
                />
                <div className='w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none'>
+                  {error && (
+                     <DisplayNotification
+                        title='Form error'
+                        message={error}
+                        type='error'
+                        onError={handleOnStateError}
+                     />
+                  )}
                   <h3 className='pt-4 text-2xl text-center'>Create a account</h3>
 
                   <form
