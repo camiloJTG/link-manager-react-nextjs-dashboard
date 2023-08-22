@@ -1,15 +1,31 @@
+import { useState } from 'react';
+import UpsertLinkForm from '../forms/UpsertLinkForm';
+
 const Navbar = () => {
+   const [openModal, setOpenModal] = useState<boolean>(false);
+
+   const handleCloseModal = () => setOpenModal(false);
+   const handleOpenModal = () => setOpenModal(true);
+
    return (
       <nav className='w-full z-30 top-10 bg-white shadow-lg border-b border-blue-400 mt-5'>
-         <div className='w-full flex items-center justify-between px-6 mb-5'>
-            <div></div>
-
+         <div className='w-full flex sm:flex-col sm:items-center md:items-end md:justify-between px-6 mb-5'>
             <div className='order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4'>
                <div className='auth flex items-center w-full md:w-full'>
-                  <button className='bg-transparent text-gray-800  p-2 rounded border border-gray-300 mr-4 hover:bg-gray-100 hover:text-gray-700'>
+                  <button
+                     onClick={handleOpenModal}
+                     className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm'
+                  >
                      New Link
                   </button>
-                  <button className='bg-blue-600 text-gray-200  p-2 rounded  hover:bg-blue-500 hover:text-gray-100'>
+                  {openModal && (
+                     <UpsertLinkForm
+                        title={'Create link'}
+                        openModal={openModal}
+                        onClose={handleCloseModal}
+                     />
+                  )}
+                  <button className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ml-3 bg-gray-300 transition duration-150 text-gray-800 ease-in-out hover:border-gray-400 hover:bg-gray-400 border rounded px-8 py-2 text-sm'>
                      Log out
                   </button>
                </div>

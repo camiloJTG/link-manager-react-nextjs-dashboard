@@ -6,3 +6,9 @@ export interface DisplayNotificationProps {
    type: typeOption;
    onError: () => void;
 }
+
+export interface UpsertLinkProps {
+   openModal: boolean;
+   onClose: () => void;
+   title: string;
+}
