@@ -1,4 +1,4 @@
-import { CustomFormData } from './customHook';
+import { CustomFormData } from '.';
 
 export interface InputCredentials extends CustomFormData {
    email: string;

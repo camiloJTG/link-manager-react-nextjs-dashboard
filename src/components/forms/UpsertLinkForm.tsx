@@ -1,6 +1,25 @@
-import { UpsertLinkProps } from '@/types/interfaces';
+import { FormEvent } from 'react';
+import { InputCreateLink, UpsertLinkProps } from '@/types/interfaces';
+import { createLinkValidation } from '@/types/schemas';
+import { createLink } from '@/services';
+import { useForm } from '@/hooks';
 
 const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
+   const { formRef, getFormData } = useForm<InputCreateLink>();
+
+   const handleOnCreateLink = async (e: FormEvent<HTMLFormElement>) => {
+      try {
+         e.preventDefault();
+         const currentForm = getFormData();
+         if (!currentForm) return null;
+
+         await createLinkValidation.validate(currentForm);
+         const result = await createLink(currentForm);
+         // call api services
+         // save result in states
+      } catch (error) {}
+   };
+
    return (
       <div
          className={`modal ${
@@ -24,12 +43,13 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                </div>
 
                <div className='overflow-x-auto'>
-                  <form>
+                  <form ref={formRef} onSubmit={handleOnCreateLink}>
                      <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
                         Title
                      </label>
                      <input
                         id='title'
+                        name='title'
                         className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
                         type='text'
                         required
@@ -41,6 +61,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                      </label>
                      <input
                         id='url'
+                        name='url'
                         className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
                         type='url'
                         required
@@ -51,6 +72,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                      </label>
                      <textarea
                         id='description'
+                        name='description'
                         className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
                         required
                         maxLength={50}
@@ -58,7 +80,10 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                         style={{ height: '80px' }}
                      />
                      <div className='flex items-center justify-end w-full mt-6 flex-col sm:flex-row'>
-                        <button className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm'>
+                        <button
+                           type='submit'
+                           className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm'
+                        >
                            Save
                         </button>
                         <button
