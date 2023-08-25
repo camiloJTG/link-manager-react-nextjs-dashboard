@@ -5,6 +5,7 @@ export interface InputCreateLink extends CustomFormData {
    url: string;
    description: string;
    userId: string;
+   token: string;
 }
 
 export interface Link {

@@ -1,22 +1,40 @@
-import { InputCreateLink, ErrorMessage, Link } from '@/types/interfaces';
+import { InputCreateLink, ErrorMessage } from '@/types/interfaces';
+import { SERVICE_COMMON_ERROR, SERVICE_CREATED_LINK } from '@/types/constants';
 
 const BASE_URL = process.env.NEXT_PUBLIC_LINK_MANAGER_API_BASE_URL;
 
-export const createLink = async (link: InputCreateLink) => {
+export const listLink = async (token: string) => {
    try {
       const resp = await fetch(`${BASE_URL}/link`, {
          method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify(link)
+         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+      });
+      const data = await resp.json();
+      if (resp.ok && data) {
+      }
+   } catch (error: any) {
+      console.error(error.message);
+      return SERVICE_COMMON_ERROR;
+   }
+};
+
+export const createLink = async (link: InputCreateLink) => {
+   try {
+      const { token, ...linkDetail } = link;
+      const resp = await fetch(`${BASE_URL}/link`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+         body: JSON.stringify(linkDetail)
       });
 
       const data = await resp.json();
       if (resp.ok && data) {
-         return data as Link;
+         return SERVICE_CREATED_LINK;
       }
-      return data as ErrorMessage;
+      const { message }: ErrorMessage = data;
+      return message;
    } catch (error: any) {
       console.error(error.message);
-      return 'App error. Please, try again later';
+      return SERVICE_COMMON_ERROR;
    }
 };

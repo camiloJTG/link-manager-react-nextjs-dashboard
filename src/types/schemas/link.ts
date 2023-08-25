@@ -7,13 +7,7 @@ export const createLinkValidation = yup.object().shape({
       .min(1, 'Title cannot is empty')
       .max(100, 'Title cannot exceed one fyfty characters')
       .trim(),
-   url: yup
-      .string()
-      .required('Url is required')
-      .min(1, 'Url cannot is empty')
-      .max(70, 'Url cannot exceed seventy characters')
-      .trim()
-      .url(),
+   url: yup.string().required('Url is required').trim().url(),
    description: yup
       .string()
       .required('Description is required')

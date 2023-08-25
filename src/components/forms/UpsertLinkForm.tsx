@@ -1,4 +1,5 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { InputCreateLink, UpsertLinkProps } from '@/types/interfaces';
 import { createLinkValidation } from '@/types/schemas';
 import { createLink } from '@/services';
@@ -6,6 +7,10 @@ import { useForm } from '@/hooks';
 
 const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
    const { formRef, getFormData } = useForm<InputCreateLink>();
+   const { data, status } = useSession();
+   const [message, setMessage] = useState<string>('');
+
+   if (status === 'loading') return null;
 
    const handleOnCreateLink = async (e: FormEvent<HTMLFormElement>) => {
       try {
@@ -14,10 +19,15 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
          if (!currentForm) return null;
 
          await createLinkValidation.validate(currentForm);
-         const result = await createLink(currentForm);
-         // call api services
-         // save result in states
-      } catch (error) {}
+         const result = await createLink({
+            ...currentForm,
+            userId: data?.user.id!,
+            token: data?.user.token!
+         });
+         setMessage(result);
+      } catch (error: any) {
+         setMessage(error.message);
+      }
    };
 
    return (

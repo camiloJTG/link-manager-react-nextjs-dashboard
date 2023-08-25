@@ -56,7 +56,7 @@ const handler = NextAuth({
          session.user.id = token.id as string;
          session.user.email = token.email as string;
          session.user.username = token.username as string;
-         session.user.token = token.token as string;
+         session.user.token = token.accessToken as string;
          return session;
       }
    }
