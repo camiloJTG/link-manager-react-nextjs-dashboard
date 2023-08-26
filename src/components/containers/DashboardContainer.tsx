@@ -1,17 +1,26 @@
 'use client';
-import { useSession } from 'next-auth/react';
+import { useLinkContext } from '@/contexts';
 import DisplayLink from '@/components/links/DisplayLink';
 import Navbar from '@/components/common/Navbar';
 
 const DashboardContainer = () => {
-   const { data, status, update } = useSession();
-
-   if (status === 'loading') return null;
+   const { links } = useLinkContext();
+   console.log(links);
 
    return (
       <>
          <Navbar />
-         <DisplayLink />
+         {links.map(({ id, title, domain, description, imageUrl }) => {
+            return (
+               <DisplayLink
+                  key={id}
+                  title={title}
+                  domain={domain}
+                  description={description}
+                  imageUrl={imageUrl}
+               />
+            );
+         })}
       </>
    );
 };

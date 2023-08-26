@@ -12,3 +12,10 @@ export interface UpsertLinkProps {
    onClose: () => void;
    title: string;
 }
+
+export interface DisplayLinksProps {
+   title: string;
+   domain: string;
+   description: string;
+   imageUrl: string;
+}

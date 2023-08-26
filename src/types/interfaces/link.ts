@@ -10,8 +10,10 @@ export interface InputCreateLink extends CustomFormData {
 
 export interface Link {
    id: string;
-   name: string;
+   title: string;
    url: string;
+   domain: string;
+   imageUrl: string;
    description: string;
    userId: string;
    createdAt: Date;

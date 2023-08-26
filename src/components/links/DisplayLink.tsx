@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import UpsertLinkForm from '../forms/UpsertLinkForm';
+import { DisplayLinksProps } from '@/types/interfaces';
 
-const DisplayLink = () => {
+const DisplayLink = ({ description, domain, imageUrl, title }: DisplayLinksProps) => {
    const [openModal, setopenModal] = useState<boolean>(false);
 
    const handleOpenUrl = () => console.log('Click card');
@@ -20,21 +21,14 @@ const DisplayLink = () => {
          >
             <div className='max-w-sm mx-auto'>
                <div className='h-236px'>
-                  <Image
-                     src={
-                        'https://images.unsplash.com/photo-1688988816492-f71727a11149?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjQ1NDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTE4ODkwOTR8&ixlib=rb-4.0.3&q=80&w=1080'
-                     }
-                     alt='img'
-                     width={400}
-                     height={400}
-                  />
+                  <Image src={imageUrl} alt='img' width={400} height={400} />
                </div>
                <div className='p-4 sm:p-4'>
-                  <p className='font-bold text-gray-700 text-[22px] leading-7 mb-1'>LINK MANE</p>
+                  <p className='font-bold text-gray-700 text-[22px] leading-7 mb-1'>{title}</p>
                   <div className='flex flex-row'>
-                     <p className='text-[17px] font-bold text-[#0FB478]'>DOMAIN</p>
+                     <p className='text-[17px] font-bold text-[#0FB478]'>{domain}</p>
                   </div>
-                  <p className='text-[#7C7C80] font-[15px] mt-6'>Short description</p>
+                  <p className='text-[#7C7C80] font-[15px] mt-6'>{description}</p>
 
                   <button
                      onClick={handleOpenModal}

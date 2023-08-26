@@ -1,5 +1,5 @@
 export * from './authorization';
-export * from './customHook';
+export * from './common';
 export * from './services';
 export * from './components';
 export * from './link';
