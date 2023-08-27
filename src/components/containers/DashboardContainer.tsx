@@ -11,7 +11,7 @@ const DashboardContainer = () => {
          <Navbar />
          <div className='container mx-auto px-4 py-8 md:py-16'>
             <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-7'>
-               {links.map(({ id, title, domain, description, imageUrl }) => {
+               {links.map(({ id, title, domain, description, imageUrl, url }) => {
                   return (
                      <DisplayLink
                         id={id}
@@ -19,6 +19,7 @@ const DashboardContainer = () => {
                         domain={domain}
                         description={description}
                         imageUrl={imageUrl}
+                        url={url}
                         key={id}
                      />
                   );

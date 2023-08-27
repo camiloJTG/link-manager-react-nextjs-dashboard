@@ -18,5 +18,6 @@ export interface DisplayLinksProps {
    title: string;
    domain: string;
    description: string;
+   url: string;
    imageUrl: string;
 }
