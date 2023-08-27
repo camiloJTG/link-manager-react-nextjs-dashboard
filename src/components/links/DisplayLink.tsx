@@ -20,9 +20,8 @@ const DisplayLink = ({ description, domain, imageUrl, title }: DisplayLinksProps
             className='w-full max-w-sm mx-auto bg-white rounded-3xl shadow-xl overflow-hidden transform transition-transform duration-200 hover:scale-105 mt-10 px-2'
          >
             <div className='max-w-sm mx-auto'>
-               <div className='h-236px'>
-                  <Image src={imageUrl} alt='img' width={400} height={400} />
-               </div>
+               <Image src={imageUrl} alt={title} width={500} height={500} />
+
                <div className='p-4 sm:p-4'>
                   <p className='font-bold text-gray-700 text-[22px] leading-7 mb-1'>{title}</p>
                   <div className='flex flex-row'>

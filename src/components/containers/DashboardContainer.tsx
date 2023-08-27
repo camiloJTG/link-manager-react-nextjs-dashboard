@@ -10,17 +10,19 @@ const DashboardContainer = () => {
    return (
       <>
          <Navbar />
-         {links.map(({ id, title, domain, description, imageUrl }) => {
-            return (
-               <DisplayLink
-                  key={id}
-                  title={title}
-                  domain={domain}
-                  description={description}
-                  imageUrl={imageUrl}
-               />
-            );
-         })}
+         <div className='flex flex-wrap justify-center'>
+            {links.map(({ id, title, domain, description, imageUrl }) => {
+               return (
+                  <DisplayLink
+                     key={id}
+                     title={title}
+                     domain={domain}
+                     description={description}
+                     imageUrl={imageUrl}
+                  />
+               );
+            })}
+         </div>
       </>
    );
 };
