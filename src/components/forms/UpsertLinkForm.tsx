@@ -1,13 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { InputCreateLink, UpsertLinkProps } from '@/types/interfaces';
-import { createLinkValidation } from '@/types/schemas';
-import { createLink } from '@/services';
 import { useForm } from '@/hooks';
+import { useLinkContext } from '@/contexts';
 
 const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
    const { formRef, getFormData } = useForm<InputCreateLink>();
    const { data, status } = useSession();
+   const { addLink } = useLinkContext();
    const [message, setMessage] = useState<string>('');
 
    if (status === 'loading') return null;
@@ -18,8 +18,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
          const currentForm = getFormData();
          if (!currentForm) return null;
 
-         await createLinkValidation.validate(currentForm);
-         const result = await createLink({
+         const result = await addLink({
             ...currentForm,
             userId: data?.user.id!,
             token: data?.user.token!
@@ -29,6 +28,8 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
          setMessage(error.message);
       }
    };
+
+   if (message.length > 0) onClose();
 
    return (
       <div

@@ -14,6 +14,7 @@ export interface UpsertLinkProps {
 }
 
 export interface DisplayLinksProps {
+   id: string;
    title: string;
    domain: string;
    description: string;
