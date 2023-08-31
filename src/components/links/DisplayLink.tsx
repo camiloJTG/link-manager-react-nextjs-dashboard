@@ -2,23 +2,33 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import UpsertLinkForm from '../forms/UpsertLinkForm';
-import { DisplayLinksProps } from '@/types/interfaces';
+import { DisplayLinksProps, Link } from '@/types/interfaces';
 import { useLinkContext } from '@/contexts';
 
 const DisplayLink = ({ description, domain, imageUrl, title, id, url }: DisplayLinksProps) => {
    const [openModal, setopenModal] = useState<boolean>(false);
-   const { deleteLink } = useLinkContext();
+   const [link, setLink] = useState<Link>();
+   const { deleteLink, findLink } = useLinkContext();
    const { data } = useSession();
 
-   const handleOpenModal = () => setopenModal(true);
    const handleCloseModal = () => setopenModal(false);
    const handleOnDeleteLink = async () => await deleteLink(id, data?.user.token!);
    const handleOpenUrl = () => window.open(url, '_blank');
+   const handleOpenModal = () => {
+      const result = findLink(id);
+      if (typeof result !== 'string') setLink(result);
+      setopenModal(true);
+   };
 
    return (
       <>
          {openModal && (
-            <UpsertLinkForm onClose={handleCloseModal} openModal={openModal} title='Update link' />
+            <UpsertLinkForm
+               onClose={handleCloseModal}
+               openModal={openModal}
+               title='Update link'
+               link={link}
+            />
          )}
          <div className='w-full max-w-sm mx-auto bg-white rounded-3xl shadow-xl overflow-hidden transform transition-transform duration-200 hover:scale-105 px-2'>
             <div className='max-w-sm'>
@@ -27,7 +37,13 @@ const DisplayLink = ({ description, domain, imageUrl, title, id, url }: DisplayL
                   className='relative w-full h-0 cursor-pointer'
                   style={{ paddingBottom: '70%' }}
                >
-                  <Image src={imageUrl} alt={title} layout='fill' objectFit='cover' />
+                  <Image
+                     src={imageUrl}
+                     alt={title}
+                     style={{ objectFit: 'cover' }}
+                     sizes='200'
+                     fill
+                  />
                </div>
 
                <div className='p-4 sm:p-4'>

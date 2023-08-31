@@ -38,10 +38,17 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
       setLinks((prev) => prev.filter((link) => link.id !== id));
    };
 
+   const findLink = (id: string) => {
+      const result = links.find((link) => link.id === id);
+      if (!result) return 'Link not found';
+      return result;
+   };
+
    const linkContextValue: LinkContextValue = {
       links,
       addLink,
-      deleteLink
+      deleteLink,
+      findLink
    };
 
    return <LinkContext.Provider value={linkContextValue}> {children} </LinkContext.Provider>;

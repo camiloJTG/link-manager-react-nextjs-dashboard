@@ -4,7 +4,7 @@ import { InputCreateLink, UpsertLinkProps } from '@/types/interfaces';
 import { useForm } from '@/hooks';
 import { useLinkContext } from '@/contexts';
 
-const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
+const UpsertLink = ({ onClose, openModal, title, link }: UpsertLinkProps) => {
    const { formRef, getFormData } = useForm<InputCreateLink>();
    const { data, status } = useSession();
    const { addLink } = useLinkContext();
@@ -24,12 +24,11 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
             token: data?.user.token!
          });
          setMessage(result);
+         if (result.length > 0) onClose();
       } catch (error: any) {
          setMessage(error.message);
       }
    };
-
-   if (message.length > 0) onClose();
 
    return (
       <div
@@ -66,6 +65,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                         required
                         maxLength={50}
                         minLength={1}
+                        defaultValue={link?.title || ''}
                      />
                      <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
                         Url
@@ -76,6 +76,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                         className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
                         type='url'
                         required
+                        defaultValue={link?.url || ''}
                      />
 
                      <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
@@ -89,6 +90,7 @@ const UpsertLink = ({ onClose, openModal, title }: UpsertLinkProps) => {
                         maxLength={50}
                         minLength={10}
                         style={{ height: '80px' }}
+                        defaultValue={link?.description || ''}
                      />
                      <div className='flex items-center justify-end w-full mt-6 flex-col sm:flex-row'>
                         <button
