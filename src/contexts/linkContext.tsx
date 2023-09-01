@@ -2,8 +2,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { InputCreateLink, Link, LinkContextValue } from '@/types/interfaces';
-import { createLink, getLinks, removeLink } from '@/services';
-import { createLinkValidation } from '@/types/schemas';
+import { createLink, getLinks, removeLink, updateCurrentLink } from '@/services';
+import { createLinkValidation, updateLinkValidation } from '@/types/schemas';
 import { SERVICE_CREATED_LINK } from '@/types/constants';
 
 const LinkContext = createContext<LinkContextValue | undefined>(undefined);
@@ -44,11 +44,36 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
       return result;
    };
 
+   const updateLink = async (id: string, link: InputCreateLink) => {
+      await updateLinkValidation.validate(link);
+      const result = await updateCurrentLink(id, link);
+
+      if (typeof result !== 'string') {
+         setLinks((prevLinks) =>
+            prevLinks.map((curr) =>
+               curr.id === id
+                  ? {
+                       ...result,
+                       title: link.title,
+                       url: result.url,
+                       description: link.description,
+                       imageUrl: curr.imageUrl,
+                       domain: result.domain
+                    }
+                  : curr
+            )
+         );
+         return SERVICE_CREATED_LINK;
+      }
+      return result;
+   };
+
    const linkContextValue: LinkContextValue = {
       links,
       addLink,
       deleteLink,
-      findLink
+      findLink,
+      updateLink
    };
 
    return <LinkContext.Provider value={linkContextValue}> {children} </LinkContext.Provider>;

@@ -7,22 +7,32 @@ import { useLinkContext } from '@/contexts';
 const UpsertLink = ({ onClose, openModal, title, link }: UpsertLinkProps) => {
    const { formRef, getFormData } = useForm<InputCreateLink>();
    const { data, status } = useSession();
-   const { addLink } = useLinkContext();
+   const { addLink, updateLink } = useLinkContext();
    const [message, setMessage] = useState<string>('');
 
    if (status === 'loading') return null;
 
-   const handleOnCreateLink = async (e: FormEvent<HTMLFormElement>) => {
+   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
       try {
          e.preventDefault();
          const currentForm = getFormData();
+         let result: string = '';
          if (!currentForm) return null;
 
-         const result = await addLink({
-            ...currentForm,
-            userId: data?.user.id!,
-            token: data?.user.token!
-         });
+         if (link) {
+            result = await updateLink(link.id, {
+               ...currentForm,
+               userId: data?.user.id!,
+               token: data?.user.token!
+            });
+         } else {
+            result = await addLink({
+               ...currentForm,
+               userId: data?.user.id!,
+               token: data?.user.token!
+            });
+         }
+
          setMessage(result);
          if (result.length > 0) onClose();
       } catch (error: any) {
@@ -53,7 +63,7 @@ const UpsertLink = ({ onClose, openModal, title, link }: UpsertLinkProps) => {
                </div>
 
                <div className='overflow-x-auto'>
-                  <form ref={formRef} onSubmit={handleOnCreateLink}>
+                  <form ref={formRef} onSubmit={handleOnSubmit}>
                      <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
                         Title
                      </label>

@@ -62,3 +62,24 @@ export const removeLink = async (id: string, token: string) => {
       return SERVICE_COMMON_ERROR;
    }
 };
+
+export const updateCurrentLink = async (id: string, link: InputCreateLink) => {
+   try {
+      const { token, ...detailLink } = link;
+      const resp = await fetch(`${BASE_URL}/link/${id}`, {
+         method: 'PATCH',
+         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+         body: JSON.stringify(detailLink)
+      });
+
+      const data = await resp.json();
+      if (resp.ok && data) {
+         return data as Link;
+      }
+      const { message }: ErrorMessage = data;
+      return message;
+   } catch (error: any) {
+      console.error(error.message);
+      return SERVICE_COMMON_ERROR;
+   }
+};

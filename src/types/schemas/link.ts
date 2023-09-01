@@ -15,3 +15,17 @@ export const createLinkValidation = yup.object().shape({
       .max(50, 'Description cannot exceed fyfty characters')
       .trim()
 });
+
+export const updateLinkValidation = yup.object().shape({
+   title: yup
+      .string()
+      .min(1, 'Title cannot is empty')
+      .max(100, 'Title cannot exceed one fyfty characters')
+      .trim(),
+   url: yup.string().trim().url(),
+   description: yup
+      .string()
+      .min(10, 'Description cannot is empty')
+      .max(50, 'Description cannot exceed fyfty characters')
+      .trim()
+});
