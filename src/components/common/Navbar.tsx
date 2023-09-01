@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import UpsertLinkForm from '../forms/UpsertLinkForm';
+import { signOut } from 'next-auth/react';
 
 const Navbar = () => {
    const [openModal, setOpenModal] = useState<boolean>(false);
 
    const handleCloseModal = () => setOpenModal(false);
    const handleOpenModal = () => setOpenModal(true);
+   const handleOnCloseSession = async () => await signOut({ callbackUrl: '/' });
 
    return (
       <nav className='w-full z-30 top-10 bg-white shadow-lg border-b border-blue-400 mt-5'>
@@ -25,7 +27,10 @@ const Navbar = () => {
                         onClose={handleCloseModal}
                      />
                   )}
-                  <button className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ml-3 bg-gray-300 transition duration-150 text-gray-800 ease-in-out hover:border-gray-400 hover:bg-gray-400 border rounded px-8 py-2 text-sm'>
+                  <button
+                     onClick={handleOnCloseSession}
+                     className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ml-3 bg-gray-300 transition duration-150 text-gray-800 ease-in-out hover:border-gray-400 hover:bg-gray-400 border rounded px-8 py-2 text-sm'
+                  >
                      Log out
                   </button>
                </div>
