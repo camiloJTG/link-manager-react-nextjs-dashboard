@@ -98,7 +98,7 @@ const LoginForm = () => {
                            className='inline-block text-sm text-blue-500 align-baseline hover:text-blue-800'
                            href='register'
                         >
-                           Don't have an account? Register at!
+                           Dont have an account? Register at!
                         </Link>
                      </div>
                   </form>
