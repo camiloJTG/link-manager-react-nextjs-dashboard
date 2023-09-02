@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import UpsertLinkForm from '../forms/UpsertLinkForm';
 import { signOut } from 'next-auth/react';
+import UpsertLinkForm from '../forms/UpsertLinkForm';
 
 const Navbar = () => {
    const [openModal, setOpenModal] = useState<boolean>(false);

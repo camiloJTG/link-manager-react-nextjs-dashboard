@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { InputCreateLink, UpsertLinkProps } from '@/types/interfaces';
 import { useForm } from '@/hooks';
 import { useLinkContext } from '@/contexts';
+import NotificationPopUp from '../common/NotificationPopUp';
 
 const UpsertLink = ({ onClose, openModal, title, link }: UpsertLinkProps) => {
    const { formRef, getFormData } = useForm<InputCreateLink>();
@@ -50,7 +51,16 @@ const UpsertLink = ({ onClose, openModal, title, link }: UpsertLinkProps) => {
             className='modal-overlay absolute inset-0 bg-gray-500 opacity-75'
             onClick={onClose}
          ></div>
+
          <div className='modal-container bg-white w-11/12 md:max-w-md mx-auto rounded z-50 overflow-y-auto max-h-screen'>
+            {message.length > 0 && (
+               <NotificationPopUp
+                  message={message}
+                  title='Notification'
+                  type='success'
+                  onError={() => true}
+               />
+            )}
             <div id='modalLayout' className='modal-content py-4 text-left px-6 shadow-2xl relative'>
                <button className='absolute top-2 right-2 cursor-pointer'>
                   <span className='text-2xl' onClick={onClose}>
